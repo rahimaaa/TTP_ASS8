@@ -39,23 +39,43 @@ class Grid extends Component{
 
     addRow = () => {
         this.setState(prevState => {
-          const { rowCount, colCount } = prevState;
-          console.log(colCount);
-          const newGridSquares = [...prevState.gridSquares];
-          //create a new Row filled with array of empty string to the colCount
-          const newRow = Array(colCount).fill('');
-          //push that newly created row to newGridSquares
-          newGridSquares.push(newRow);
-          return {
-            //update rowCount
-            rowCount: rowCount + 1,
-            //update gridSquares
-            gridSquares: newGridSquares
+            
+            //getting the row and col count from the previous state
+            const { rowCount, colCount } = prevState;
+            console.log(colCount);
+            //spread operator on getting gridSquares array from previous state
+            const newGridSquares = [...prevState.gridSquares];
+            //create a new Row filled with array of empty string to the colCount
+            const newRow = Array(colCount).fill('');
+            //push that newly created row to newGridSquares
+            newGridSquares.push(newRow);
+            return {
+                //update rowCount
+                rowCount: rowCount + 1,
+                //update gridSquares
+                gridSquares: newGridSquares
           };
         });
     };
     
-    
+    removeRow = () => {
+        this.setState(prevState => {
+            //only rowCount is needed when removing Row, getting the row count from prevState
+            const{rowCount} = prevState;
+            //limit the activity not to go rowCount to -
+            if(rowCount > 1){
+                //spread operator on getting gridSquares array from previous state
+                const newGridSquares = [...prevState.gridSquares];
+                //pop the array so that last element is remove so does removing row
+                newGridSquares.pop();
+                return{
+                    //update rowCOunt and gridSquares
+                    rowCount: rowCount - 1,
+                    gridSquares: newGridSquares
+                };
+            }
+        })
+    };
 
     render(){
 //have to figure out what to put inside the table tag for grid ...

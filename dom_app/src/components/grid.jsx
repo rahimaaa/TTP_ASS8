@@ -42,13 +42,21 @@ class Grid extends Component{
             
             //getting the row and col count from the previous state
             const { rowCount, colCount } = prevState;
-            console.log(colCount);
+
             //spread operator on getting gridSquares array from previous state
             const newGridSquares = [...prevState.gridSquares];
             //create a new Row filled with array of empty string to the colCount
-            const newRow = Array(colCount).fill('');
+            //conflict when addColumns ~ quick solve on 1 more grid or col when addRow()
+            let newRow 
+                if(colCount !== 1){
+                    newRow = Array(colCount - 1).fill('');
+                }else{
+                    newRow = Array(colCount).fill('');
+                }
+                
             //push that newly created row to newGridSquares
             newGridSquares.push(newRow);
+
             return {
                 //update rowCount
                 rowCount: rowCount + 1,
@@ -77,6 +85,34 @@ class Grid extends Component{
         })
     };
 
+    addColumn = () => {
+        this.setState(prevState => {
+            const{rowCount, colCount} = prevState;
+            let newGridSquares;
+            //when there is no row to loop create a single grid
+            if(colCount === 1 && rowCount === 1){
+                newGridSquares = [...prevState.gridSquares];
+                //create a new Row filled with array of empty string to the colCount
+                const newRow = Array(colCount).fill('');
+                //push that newly created row to newGridSquares
+                newGridSquares.push(newRow);
+                
+            }else{
+                //going to loop through each row which is the elements in gridSquares array
+                //use spread and append the blank array 
+                //map will create the new Array with those added blank array
+                newGridSquares = prevState.gridSquares.map(row => [...row, ''] );
+                
+            }
+            return{
+                //update colCount and gridSquares 
+                colCount: colCount + 1,
+                gridSquares: newGridSquares
+            };
+        
+        });
+    };
+
     render(){
 //have to figure out what to put inside the table tag for grid ...
         return(
@@ -85,7 +121,7 @@ class Grid extends Component{
             <div>
                 <button onClick={this.addRow}>Add Row</button>
                 <button onClick={this.removeRow}>Remove Row</button>
-                <button>Add Column</button>
+                <button onClick={this.addColumn}>Add Column</button>
                 <button>Remove Column</button>
             </div>
             <p>testtt</p>

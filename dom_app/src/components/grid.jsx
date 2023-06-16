@@ -4,6 +4,8 @@
 import React, {Component, ReactPropTypes} from 'react';
 import './grid.css';
 
+import SelectButton from './selectButton';
+
 class Grid extends Component{
     constructor(props){
         super(props);
@@ -12,7 +14,11 @@ class Grid extends Component{
             colCount: 1,
             //create an array for grid?
             gridSquares: [], 
+            color: ""
         };
+
+        //bind function
+        this.getColor = this.getColor.bind(this);
     }
 
     //filling the gridSquare?
@@ -65,6 +71,13 @@ class Grid extends Component{
           };
         });
     };
+
+    //trigger color change in select button
+    getColor(x){
+        //this.setState({color : this.props.color});
+        x.currentTarget.style.backgroundColor = this.props.color;
+        console.log(this.state.color);
+    }
     
     removeRow = () => {
         this.setState(prevState => {
@@ -138,7 +151,7 @@ class Grid extends Component{
                     {this.state.gridSquares.map((row, rowIndex) => (
                         <tr key={rowIndex}>
                         {row.map((cell, colIndex) => (
-                          <td key={colIndex} style={{ backgroundColor: cell }}></td>
+                          <td key={colIndex} style={{ backgroundColor: cell }} onClick={this.getColor}></td>
                         ))}
                       </tr>
                     ))}

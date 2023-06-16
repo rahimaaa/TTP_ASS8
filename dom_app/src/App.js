@@ -6,9 +6,7 @@ import SelectButton from './components/selectButton';
 function App() {
   return (
     <div>
-      <SelectButton /><br></br><br></br>
-      <Grid />
-    
+      <SelectButton />
     </div>
   );
 }

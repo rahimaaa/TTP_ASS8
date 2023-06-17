@@ -54,11 +54,12 @@ class Grid extends Component{
             //create a new Row filled with array of empty string to the colCount
             //conflict when addColumns ~ quick solve on 1 more grid or col when addRow()
             let newRow 
-                if(colCount !== 1){
-                    newRow = Array(colCount - 1).fill('');
-                }else{
-                    newRow = Array(colCount).fill('');
-                }
+                //if(colCount !== 1){
+                     //newRow = Array(colCount - 1).fill('');
+                 //}else{
+                     //newRow = Array(colCount).fill('');
+                 //}
+                 newRow = Array(colCount).fill('');
                 
             //push that newly created row to newGridSquares
             newGridSquares.push(newRow);
@@ -82,17 +83,26 @@ class Grid extends Component{
     removeRow = () => {
         this.setState(prevState => {
             //only rowCount is needed when removing Row, getting the row count from prevState
-            const{rowCount} = prevState;
+            const{rowCount, colCount} = prevState;
             //limit the activity not to go rowCount to -
             if(rowCount > 1){
                 //spread operator on getting gridSquares array from previous state
                 const newGridSquares = [...prevState.gridSquares];
                 //pop the array so that last element is remove so does removing row
                 newGridSquares.pop();
+
+                if(rowCount <= 2){
+                    console.log(colCount);
+                    return {
+                        rowCount: 1,
+                        colCount: 1,
+                        gridSquares: newGridSquares,
+                    }
+                }
                 return{
                     //update rowCOunt and gridSquares
                     rowCount: rowCount - 1,
-                    gridSquares: newGridSquares
+                    gridSquares: newGridSquares,
                 };
             }
         })
@@ -109,6 +119,11 @@ class Grid extends Component{
                 const newRow = Array(colCount).fill('');
                 //push that newly created row to newGridSquares
                 newGridSquares.push(newRow);
+
+                return{
+                    rowCount: rowCount + 1,
+                    gridSquares: newGridSquares
+                }
                 
             }else{
                 //going to loop through each row which is the elements in gridSquares array
@@ -126,6 +141,29 @@ class Grid extends Component{
         });
     };
 
+    removeColumn = () => {
+        this.setState(prevState => {
+          const { colCount } = prevState;
+          if (colCount >= 1) {
+                const newGridSquares = prevState.gridSquares.map(row => row.slice(0, -1));
+                if(colCount !== 1){
+                    return {
+                        colCount: colCount - 1,
+                        gridSquares: newGridSquares,
+                    };
+                }
+                //reset when it hit 0
+                return {
+                    rowCount: 1,
+                    colCount: 1,
+                    gridSquares: newGridSquares,
+                }
+                    
+            }
+          return prevState;
+        });
+      };
+
     render(){
 //have to figure out what to put inside the table tag for grid ...
         return(
@@ -135,7 +173,7 @@ class Grid extends Component{
                 <button onClick={this.addRow}>Add Row</button>
                 <button onClick={this.removeRow}>Remove Row</button>
                 <button onClick={this.addColumn}>Add Column</button>
-                <button>Remove Column</button>
+                <button onClick={this.removeColumn}>Remove Column</button>
             </div>
             <p>testtt</p>
             <table>

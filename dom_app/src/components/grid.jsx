@@ -10,8 +10,8 @@ class Grid extends Component{
     constructor(props){
         super(props);
         this.state = {
-            rowCount: 1,
-            colCount: 1,
+            rowCount: 0,
+            colCount: 0,
             //create an array for grid?
             gridSquares: [], 
             color: ""
@@ -21,27 +21,7 @@ class Grid extends Component{
         this.getColor = this.getColor.bind(this);
     }
 
-    //filling the gridSquare?
-    // generateGridSquares = () =>{
-    //     const{rowCount, colCount} = this.state;//destructuring like rowCount will hold this.state.rowCount
-    //     let squares = [];
-    //     for(let i = 0; i < rowCount; i++){
-    //         let row = [];
-    //         for (let j = 0; j < colCount; j++){
-    //             row.push('');
-    //         }
-    //         squares.push(row);
-    //     }
-    //     this.setState({
-    //         gridSquares: squares
-    //     });
-    // }
 
-    // renderGridCells = ()=>{
-    //     return this.state.gridSquares.map((row, rowIndex) =>(<tr key={rowIndex}>
-            
-    //     </tr>));
-    // }
 
     addRow = () => {
         this.setState(prevState => {
@@ -53,12 +33,19 @@ class Grid extends Component{
             const newGridSquares = [...prevState.gridSquares];
             //create a new Row filled with array of empty string to the colCount
             //conflict when addColumns ~ quick solve on 1 more grid or col when addRow()
-            let newRow 
-                //if(colCount !== 1){
-                     //newRow = Array(colCount - 1).fill('');
-                 //}else{
-                     //newRow = Array(colCount).fill('');
-                 //}
+
+            let newRow; 
+                
+                 if(colCount === 0){
+                    newRow = Array(colCount + 1). fill('');
+                    newGridSquares.push(newRow);
+
+                    return{
+                        rowCount: rowCount + 1,
+                        colCount: colCount + 1,
+                        gridSquares: newGridSquares,
+                    }
+                 }
                  newRow = Array(colCount).fill('');
                 
             //push that newly created row to newGridSquares
@@ -91,11 +78,10 @@ class Grid extends Component{
                 //pop the array so that last element is remove so does removing row
                 newGridSquares.pop();
 
-                if(rowCount <= 2){
-                    console.log(colCount);
+                if(rowCount <= 1){;
                     return {
-                        rowCount: 1,
-                        colCount: 1,
+                        rowCount: 0,
+                        colCount: 0,
                         gridSquares: newGridSquares,
                     }
                 }
@@ -112,11 +98,12 @@ class Grid extends Component{
         this.setState(prevState => {
             const{rowCount, colCount} = prevState;
             let newGridSquares;
+
             //when there is no row to loop create a single grid
-            if(colCount === 1 && rowCount === 1){
+            if(colCount === 0 && rowCount === 0){
                 newGridSquares = [...prevState.gridSquares];
                 //create a new Row filled with array of empty string to the colCount
-                const newRow = Array(colCount).fill('');
+                const newRow = Array(colCount + 1).fill('');
                 //push that newly created row to newGridSquares
                 newGridSquares.push(newRow);
 
@@ -143,19 +130,23 @@ class Grid extends Component{
 
     removeColumn = () => {
         this.setState(prevState => {
-          const { colCount } = prevState;
-          if (colCount >= 1) {
-                const newGridSquares = prevState.gridSquares.map(row => row.slice(0, -1));
-                if(colCount !== 1){
+          const { rowCount,colCount } = prevState;
+          if (colCount >= 0) {
+                //slice will give a new sliced array starting from the index of 0 and it will slice the last
+                //element
+                let newGridSquares = prevState.gridSquares.map(row => row.slice(0, -1));
+                if(colCount > 1){
                     return {
                         colCount: colCount - 1,
                         gridSquares: newGridSquares,
                     };
                 }
-                //reset when it hit 0
+
+                //reset when it hit 0 therefore making gridSquares back to blank array
+                newGridSquares = []; 
                 return {
-                    rowCount: 1,
-                    colCount: 1,
+                    rowCount: 0,
+                    colCount: 0,
                     gridSquares: newGridSquares,
                 }
                     
@@ -165,7 +156,6 @@ class Grid extends Component{
       };
 
     render(){
-//have to figure out what to put inside the table tag for grid ...
         return(
         <div> 
         

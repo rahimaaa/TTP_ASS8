@@ -61,11 +61,20 @@ class Grid extends Component{
     };
 
     //trigger color change in select button
-    getColor(x){
-        //this.setState({color : this.props.color});
-        x.currentTarget.style.backgroundColor = this.props.color;
-        console.log(this.state.color);
-    }
+    getColor = (row,col) =>{
+        //x.currentTarget.style.backgroundColor = this.props.color;
+        //console.log(row, " ", col);
+
+        
+        this.setState(prevState => {
+
+            const newGridSquares = [...prevState.gridSquares]
+            newGridSquares[row][col] = this.props.color;
+
+            return {gridSquares : newGridSquares};
+        })
+        
+    };
     
     removeRow = () => {
         this.setState(prevState => {
@@ -155,6 +164,24 @@ class Grid extends Component{
         });
       };
 
+      //trigger by fill empty button
+      fillEmpty = () => {
+        this.setState(prevState => {
+
+            const newGridSquares = [...prevState.gridSquares]
+            for(let row = 0 ; row < newGridSquares.length ; row++){
+                for(let col = 0 ; col < newGridSquares[row].length ; col++){
+                    if(newGridSquares[row][col] === ""){
+                        newGridSquares[row][col] = this.props.color;
+                    }
+                }
+            }
+
+            return {gridSquares : newGridSquares};
+        })
+      }
+
+
     render(){
         return(
         <div> 
@@ -166,6 +193,11 @@ class Grid extends Component{
                 <button onClick={this.removeColumn}>Remove Column</button>
             </div>
             <p>testtt</p>
+
+            <div>
+                <button onClick={this.fillEmpty}>Fill All Empty Cell</button>
+            </div>
+            <br />
             <table>
                 <tbody>
                     {/*
@@ -179,7 +211,9 @@ class Grid extends Component{
                     {this.state.gridSquares.map((row, rowIndex) => (
                         <tr key={rowIndex}>
                         {row.map((cell, colIndex) => (
-                          <td key={colIndex} style={{ backgroundColor: cell }} onClick={this.getColor}></td>
+                          <td key={colIndex} style={{ backgroundColor: cell }} onClick={() => this.getColor(rowIndex,colIndex)}>
+                            {rowIndex} + {colIndex}
+                          </td>
                         ))}
                       </tr>
                     ))}

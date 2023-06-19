@@ -14,11 +14,13 @@ class Grid extends Component{
             colCount: 0,
             //create an array for grid?
             gridSquares: [], 
-            color: ""
+            color: "",
+            click: false,
         };
 
         //bind function
         this.getColor = this.getColor.bind(this);
+        this.mouseEnter = this.mouseEnter.bind(this);
     }
 
     
@@ -213,8 +215,25 @@ class Grid extends Component{
         })
         
       }
-      
+      mouseDown=()=>{
+        this.setState({click:true})
+      }
+      mouseUp=()=>{
+        this.setState({click:false})
+      }
 
+      mouseEnter = (row, col)=>{
+        if(this.state.click){
+            
+            this.setState(prevState => {
+
+                const newGridSquares = [...prevState.gridSquares]
+                newGridSquares[row][col] = this.props.color;
+    
+                return {gridSquares : newGridSquares};
+            })
+        }
+      }
 
 
     render(){
@@ -250,7 +269,14 @@ class Grid extends Component{
                     {this.state.gridSquares.map((row, rowIndex) => (
                         <tr key={rowIndex}>
                         {row.map((cell, colIndex) => (
-                          <td key={colIndex} style={{ backgroundColor: cell }} onClick={() => this.getColor(rowIndex,colIndex)}>
+                          <td 
+                          key={colIndex} 
+                          style={{ backgroundColor: cell }} 
+                          onClick={() => this.getColor(rowIndex,colIndex)}
+                          onMouseDown = {this.mouseDown}
+                          onMouseUp = {this.mouseUp}
+                          onMouseEnter = {() => this.mouseEnter(rowIndex, colIndex)}
+                          >
                             {rowIndex} + {colIndex}
                           </td>
                         ))}

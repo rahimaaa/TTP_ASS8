@@ -21,7 +21,7 @@ class Grid extends Component{
         this.getColor = this.getColor.bind(this);
     }
 
-
+    
 
     addRow = () => {
         this.setState(prevState => {
@@ -185,6 +185,22 @@ class Grid extends Component{
         })
       }
 
+      fillAllCells=()=>{
+        this.setState(prevState => {
+
+            const newGridSquares = [...prevState.gridSquares]
+            for(let row = 0 ; row < newGridSquares.length ; row++){
+                for(let col = 0 ; col < newGridSquares[row].length ; col++){
+                    newGridSquares[row][col] = this.props.color;
+                }
+            }
+
+            return {gridSquares : newGridSquares};
+        })
+      }
+      
+
+
 
     render(){
         return(
@@ -200,6 +216,10 @@ class Grid extends Component{
 
             <div>
                 <button onClick={this.fillEmpty}>Fill All Empty Cell</button>
+                <button onClick={this.fillAllCells}>Fill All Cells</button>
+                {/*<button onClick={this.fillEmpty}>Fill All Empty Cell</button>
+*/}
+
             </div>
             <br />
             <table>

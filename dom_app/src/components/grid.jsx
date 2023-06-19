@@ -198,6 +198,21 @@ class Grid extends Component{
             return {gridSquares : newGridSquares};
         })
       }
+
+      clearAll=()=>{
+        this.setState(prevState => {
+
+            const newGridSquares = [...prevState.gridSquares]
+            for(let row = 0 ; row < newGridSquares.length ; row++){
+                for(let col = 0 ; col < newGridSquares[row].length ; col++){
+                    newGridSquares[row][col] = "";
+                }
+            }
+
+            return {gridSquares : newGridSquares};
+        })
+        
+      }
       
 
 
@@ -217,8 +232,8 @@ class Grid extends Component{
             <div>
                 <button onClick={this.fillEmpty}>Fill All Empty Cell</button>
                 <button onClick={this.fillAllCells}>Fill All Cells</button>
-                {/*<button onClick={this.fillEmpty}>Fill All Empty Cell</button>
-*/}
+                <button onClick={this.clearAll}>Clear All Cells</button>
+
 
             </div>
             <br />

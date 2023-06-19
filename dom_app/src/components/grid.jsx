@@ -33,7 +33,7 @@ class Grid extends Component{
             const newGridSquares = [...prevState.gridSquares];
             //create a new Row filled with array of empty string to the colCount
             //conflict when addColumns ~ quick solve on 1 more grid or col when addRow()
-
+            console.log("row: ",rowCount, "col: ", colCount);
             let newRow; 
                 
                  if(colCount === 0){
@@ -81,7 +81,8 @@ class Grid extends Component{
             //only rowCount is needed when removing Row, getting the row count from prevState
             const{rowCount, colCount} = prevState;
             //limit the activity not to go rowCount to -
-            if(rowCount > 1){
+            console.log("row: ",rowCount, "col: ", colCount);
+            if(rowCount >= 1){
                 //spread operator on getting gridSquares array from previous state
                 const newGridSquares = [...prevState.gridSquares];
                 //pop the array so that last element is remove so does removing row
@@ -109,6 +110,7 @@ class Grid extends Component{
             let newGridSquares;
 
             //when there is no row to loop create a single grid
+            console.log("row: ",rowCount, "col: ", colCount);
             if(colCount === 0 && rowCount === 0){
                 newGridSquares = [...prevState.gridSquares];
                 //create a new Row filled with array of empty string to the colCount
@@ -118,6 +120,7 @@ class Grid extends Component{
 
                 return{
                     rowCount: rowCount + 1,
+                    colCount: colCount + 1,
                     gridSquares: newGridSquares
                 }
                 
@@ -140,6 +143,7 @@ class Grid extends Component{
     removeColumn = () => {
         this.setState(prevState => {
           const { rowCount,colCount } = prevState;
+          console.log("row: ",rowCount, "col: ", colCount);
           if (colCount >= 0) {
                 //slice will give a new sliced array starting from the index of 0 and it will slice the last
                 //element
